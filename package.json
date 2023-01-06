@@ -2,7 +2,7 @@
   "name": "plato",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://alexandre-eisenmann.github.io",
+  "homepage": "https://alexandre-eisenmann.github.io/plato",
   "proxy": "http://localhost:8080",
   "dependencies": {
     "@react-three/drei": "^9.45.1",
