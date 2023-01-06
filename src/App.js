@@ -1,21 +1,15 @@
-import { useRef, useState, Suspense, useEffect, useMemo } from 'react'
-import { Canvas, useFrame, useThree, useLoader } from '@react-three/fiber'
-import { OrbitControls, PerspectiveCamera, RoundedBox, useHelper } from '@react-three/drei'
-import { TextureLoader } from 'three/src/loaders/TextureLoader'
-import { AdditiveBlending, DoubleSide, Vector3, Quaternion, Raycaster,Geometry, NormalMapTypes, Plane, LoopOnce } from "three";
-import { BoxHelper } from "three";
-import { VertexNormalsHelper } from "three/examples/jsm/helpers/VertexNormalsHelper";
+import { useRef, useState, useEffect } from 'react'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
+import { AdditiveBlending, DoubleSide, Vector3, Quaternion, Raycaster, Plane } from "three";
 
 
 import { maze } from "./MazeGenerator"
 import seedrandom from 'seedrandom';
-// import { assert } from 'console';
 
 
 function Camera(props) {
   const viewport = useThree((state) => state.viewport)
-  // return <PerspectiveCamera makeDefault manual position={[0, 10, 0]} fov={45} aspect={viewport.width/viewport.height} near={0.1} far={1000}/>
-  // return <PerspectiveCamera makeDefault manual position={[0, 2.5, 2.5]} fov={70} aspect={viewport.width/viewport.height} near={0.1} far={1000}/>
   return <PerspectiveCamera makeDefault manual up = {[0,0,1]}  position={[0, 0, 30]} aspect={viewport.width/viewport.height} />
 }
 
@@ -282,12 +276,7 @@ export default function App() {
       {/* <Laser from={new Vector3(11.044027937746373,9.113598317260891,0.5)} to={new Vector3(10.237424798389586,7.5,0.5)} canvas={laserCanvas} /> */}
       <Laser from={source} to={target} canvas={laserCanvas} />
 
-      {/* laser from: (12.604329226238358,7.665801431179995) to: (10.902385673672452,7.5) left
-App.js:168 laser from: (12.541239334805,4.063853239013911) to: (10.369358504077773,7.5) left
-App.js:168 laser from: (11.044027937746373,9.113598317260891) to: (10.237424798389586,7.5) left
-App.js:168 laser from: (11.746446480519289,11.716199241274925) to: (10.225371307616026,7.5) left
-
-      {[...Array(500).keys()].map(i => {
+      {/* {[...Array(500).keys()].map(i => {
         return <Laser key={i} from={new Vector3(12+(Math.random()-0.5)*2,7.5+(Math.random()-0.5)*10,0.5)} to={new Vector3(10+Math.random(),7.5,0.5)} canvas={laserCanvas} />
       })} */}
       
