@@ -257,10 +257,10 @@ export default function App() {
 
 
         
-      <mesh>
+      {/* <mesh>
         <boxGeometry position={[0,0,0]} args={[0.3, 0.3, 0.3]} /> 
         <meshPhongMaterial attach="material" color="red" />
-      </mesh>
+      </mesh> */}
 
       
 
