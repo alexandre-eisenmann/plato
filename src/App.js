@@ -1,7 +1,11 @@
 import { useRef, useState, useEffect } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
+import { OrbitControls, PerspectiveCamera, useKeyboardControls } from '@react-three/drei'
 import { AdditiveBlending, DoubleSide, Vector3, Quaternion, Raycaster, Plane } from "three";
+import useKeypress from "./useKeypress.js"
+import { v4 as uuidv4 } from 'uuid';
+
+
 
 
 import { maze } from "./MazeGenerator"
@@ -14,18 +18,28 @@ function Camera(props) {
 }
 
 
-function generateLaserBodyCanvas(canvas) {
-  var canvas = document.createElement('canvas');
+function generateLaserBodyCanvas(color = 'white') {
+  var canvas = document.createElement(`canvas`);
   var context = canvas.getContext('2d');
   canvas.width = 1;
   canvas.height = 64;
   // set gradient
   var gradient = context.createLinearGradient(0, 0, canvas.width, canvas.height);
-  gradient.addColorStop(0, 'rgba(  0,  0,  0,0.1)');
-  gradient.addColorStop(0.1, 'rgba(160,160,160,0.3)');
-  gradient.addColorStop(0.5, 'rgba(255,255,255,0.5)');
-  gradient.addColorStop(0.9, 'rgba(160,160,160,0.3)');
-  gradient.addColorStop(1.0, 'rgba(  0,  0,  0,0.1)');
+  if (color === "white") {
+    gradient.addColorStop(0, 'rgba(  0,  0,  0,0.1)');
+    gradient.addColorStop(0.1, 'rgba(160,160,160,0.3)');
+    gradient.addColorStop(0.5, 'rgba(255,255,255,0.5)');
+    gradient.addColorStop(0.9, 'rgba(160,160,160,0.3)');
+    gradient.addColorStop(1.0, 'rgba(  0,  0,  0,0.1)');
+  } else if (color === "yellow") {
+    gradient.addColorStop(0, 'rgba(  0,  0,  0,0.1)');
+    gradient.addColorStop(0.1, 'rgba(255,215,0,0.3)');
+    gradient.addColorStop(0.5, 'rgba(255,255,0,1)');
+    gradient.addColorStop(0.9, 'rgba(255,215,0,0.3)');
+    gradient.addColorStop(1.0, 'rgba(  0,  0,  0,0.1)');
+  }
+
+
   // fill the rectangle
   context.fillStyle = gradient;
   context.fillRect(0, 0, canvas.width, canvas.height);
@@ -144,25 +158,21 @@ function reflect(source, target, walls) {
 
 
 
-function Laser({from, to ,canvas}) {
+function Laser({id, from, to ,canvas, notify}) {
   const [points, setPoints] = useState([from,to])
   let length = len([from, to])
-  let ok = useRef(true)
   useFrame((state, delta) => {
-    if (ok.current) {
-      const {scene} = state
-      const {children} = scene
-      const speed = delta*20
-      const walls = children.filter(mesh => mesh.name === "wall");
-      const pointArray = move(points,speed ,walls)
-      const difference = len(pointArray) - length
-      if ( Math.abs(difference) < 0.0000001 )
-        setPoints(pointArray)
-        if (pointArray.length > 0 && (pointArray[0].x > 30 || pointArray[0].y > 30)) {
-          console.log(`laser from: (${from.x},${from.y}) to: (${to.x},${to.y}) left`)
-          ok.current = false
-        }
-    }
+    const {scene} = state
+    const {children} = scene
+    const speed = delta*20
+    const walls = children.filter(mesh => mesh.name === "wall");
+    const pointArray = move(points,speed ,walls)
+    const difference = len(pointArray) - length
+    if ( Math.abs(difference) < 0.0000001 )
+      setPoints(pointArray)
+      if (pointArray.length > 0 && (pointArray[0].x > 30 || pointArray[0].y > 30)) {
+        notify({type: "remove", id: id})
+      }
   }) 
 
   
@@ -232,16 +242,96 @@ const width = 20
 const height = 20
 export default function App() {
   
-  const [walls, setWalls] = useState(Object.keys(maze(width,height, new seedrandom('victor mathematician loco9'))))
-  const laserCanvas = generateLaserBodyCanvas()
-  let source = new Vector3(11.044027937746373,9.113598317260891,0.5)
-  let target = new Vector3(10.237424798389586,7.5,0.5)
+  const [walls, setWalls] = useState(maze(width,height, new seedrandom('victor mathematician loco9')))
 
-  const direction = target.clone().sub(source).normalize().multiplyScalar(-20)
-  source = source.clone().add(direction)
-  target = target.clone().add(direction)
+  
+
+  const [doors, setDoors] = useState([])
+
+  const [lasers, setLasers] = useState({})
+
+
+  const keyPressed = useKeypress('Space');
+
+
+
+  useEffect(() => {
+    const {shiftKey, code} = keyPressed
+    if (code === 'Space') {
+        console.log("shift",shiftKey)
+        let color = "red"
+
+        let source = new Vector3(10.237424798389586 + 2,7.5,0.5)
+
+        if (!shiftKey) {
+          source = source.add(new Vector3(0,(Math.random()-0.5)*10, 0 ))
+          color = "white"
+        } else {
+          source = new Vector3(11.044027937746373, 9.113598317260891,0.5)
+        }
+  
+        let target = new Vector3(10.237424798389586,7.5,0.5)
+        
+        const direction = target.clone().sub(source).normalize().multiplyScalar(-20)
+        source = source.clone().add(direction)
+        target = target.clone().add(direction)
+
+
+
+        const _lasers = {...lasers}
+        _lasers[uuidv4()] = {source, target, color}
+        setLasers(_lasers)
+
+    }
+
+  }, [keyPressed])
+
+  useEffect(() => {
+    const holes = []
+    Object.keys(walls).map((wall,k) => {
+
+      let [direction,i,j] = wall.split(":")        
+      i = parseInt(i)
+      j = parseInt(j)
+
+      if (walls[wall].door) {
+        if (direction === "v") {
+          const y = i - height/2 + 0.5
+          const x = j + 1.0 - width/2 + 0.5 
+          const ref = new Vector3(x,y,0.4).add(new Vector3(-0.25, 0, 0))
+          holes.push(ref)
+        } else {
+          const x = i - width/2 + 0.5
+          const y = j - height/2 + 1.5 - 0.75
+        }
+      }
+    })
+
+    setDoors(holes)
+
+
+  }, [ walls])
+
+    
+  const laserCanvas = generateLaserBodyCanvas()
+  const yellowLaserCanvas = generateLaserBodyCanvas('yellow')
+
+
+  const notify = ({type, id}) => {
+    
+    if (type === "remove") {
+      const _lasers = {...lasers}
+      delete _lasers[id]
+      setLasers(_lasers)
+  
+      console.log(`laser ${id} lost `)
+  
+    }
+    
+  }
 
   return (
+
     <Canvas  >
       <color attach="background" args={['black']} />
       <Camera />
@@ -254,54 +344,50 @@ export default function App() {
         <meshPhongMaterial color="green" side={DoubleSide} />
       </mesh>
 
+      {Object.keys(lasers).map(id => {
+        const {source, target, color} = lasers[id]
 
-
+        if (color === 'white') {
+          return <Laser key={id} id={id} from={source} to={target} canvas={laserCanvas} notify={notify}/>
+        } else {
+          return <Laser key={id} id={id} from={source} to={target} canvas={yellowLaserCanvas} notify={notify}/>
+        }
         
-      {/* <mesh>
-        <boxGeometry position={[0,0,0]} args={[0.3, 0.3, 0.3]} /> 
-        <meshPhongMaterial attach="material" color="red" />
-      </mesh> */}
-
-      
-
-      {/* <Laser from={new Vector3(5,5,5)} to={new Vector3(3,4,4)} canvas={laserCanvas} />
-      <Laser from={new Vector3(0,0,5)} to={new Vector3(0,2,4)} canvas={laserCanvas} />
-      <Laser from={new Vector3(-1,2,4)} to={new Vector3(1,2,3)} canvas={laserCanvas} />
-      <Laser from={new Vector3(3,2,9)} to={new Vector3(1,4,5)} canvas={laserCanvas} /> */}
-
-      {/* <Laser from={new Vector3(12,7.5,0.5)} to={new Vector3(10,7.5,0.5)} canvas={laserCanvas} /> */}
-
-      
-
-      {/* <Laser from={new Vector3(11.044027937746373,9.113598317260891,0.5)} to={new Vector3(10.237424798389586,7.5,0.5)} canvas={laserCanvas} /> */}
-      <Laser from={source} to={target} canvas={laserCanvas} />
-
-      {/* {[...Array(500).keys()].map(i => {
-        return <Laser key={i} from={new Vector3(12+(Math.random()-0.5)*2,7.5+(Math.random()-0.5)*10,0.5)} to={new Vector3(10+Math.random(),7.5,0.5)} canvas={laserCanvas} />
-      })} */}
-      
+      })}
 
 
 
-      {walls.map((wall,k) => {
-
+      {Object.keys(walls).map((wall,k) => {
         let [direction,i,j] = wall.split(":")        
         i = parseInt(i)
         j = parseInt(j)
 
-        
-        if (direction === "v") {
-          const boundary = j === -1 || j === width -1
-          const y = i - height/2 + 0.5
-          const x = j + 1.0 - width/2 + 0.5
-          return <Wall key={`v-${k}`} x={x} y={y} boundary={boundary} vertical   /> 
-        } else {
-          const boundary = j === -1 || j === height -1
-          const x = i - width/2 + 0.5
-          const y = j - height/2 + 1.5
-          return <Wall key={`h-${k}`} x={x} y={y} boundary={boundary} horizontal  />
+        if (!walls[wall].door) {
+  
+          
+          if (direction === "v") {
+            const boundary = j === -1 || j === width -1
+            const y = i - height/2 + 0.5
+            const x = j + 1.0 - width/2 + 0.5
+            return <Wall key={`v-${k}`} x={x} y={y} boundary={boundary} vertical   /> 
+          } else {
+            const boundary = j === -1 || j === height -1
+            const x = i - width/2 + 0.5
+            const y = j - height/2 + 1.5
+            return <Wall key={`h-${k}`} x={x} y={y} boundary={boundary} horizontal  />
+          }
         }
+
       })}
+
+
+      {/* {doors.map((door,i) => {
+          return <mesh  position={door}  key={`d-${i}`}>
+            <boxGeometry args={[0.1,0.1,0.1]} /> 
+            <meshPhongMaterial attach="material" color="yellow" />
+          </mesh> 
+
+      })} */}
 
   
       <OrbitControls />

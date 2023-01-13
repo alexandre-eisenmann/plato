@@ -50,26 +50,26 @@ function remove_wall(a,b, walls) {
 function all_walls(width, height, random) {
     const walls = {}
     const boundaries = []
-    const doors = 2
+    const number_of_doors = 2
     for (var w = 0; w <= width; w++) {
         for (var h = 0; h <= height; h++) {
             if (w<width) {
                 const key = `h:${w}:${h-1}`
                 if (h===0 || h===height)
                     boundaries.push(key)
-                walls[key] = true
+                walls[key] = {door: false}
             } 
             if (h<height) {
                 const key = `v:${h}:${w-1}`
                 if (w===0 || w===width)
                     boundaries.push(key)
-                walls[key] = true
+                walls[key] = {door: false}
             }
         }
     }
-    for (let i=0; i< doors; i++) {
+    for (let i=0; i< number_of_doors; i++) {
         const enter = boundaries.splice(Math.floor(random()*boundaries.length), 1)
-        delete walls[enter]
+        walls[enter]["door"] = true
     }
     return walls
 }
