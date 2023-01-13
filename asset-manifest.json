@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/plato/static/css/main.1d38bf31.css",
-    "main.js": "/plato/static/js/main.0727415b.js",
+    "main.js": "/plato/static/js/main.b577c227.js",
     "static/js/787.cb869bf8.chunk.js": "/plato/static/js/787.cb869bf8.chunk.js",
     "index.html": "/plato/index.html",
     "main.1d38bf31.css.map": "/plato/static/css/main.1d38bf31.css.map",
-    "main.0727415b.js.map": "/plato/static/js/main.0727415b.js.map",
+    "main.b577c227.js.map": "/plato/static/js/main.b577c227.js.map",
     "787.cb869bf8.chunk.js.map": "/plato/static/js/787.cb869bf8.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1d38bf31.css",
-    "static/js/main.0727415b.js"
+    "static/js/main.b577c227.js"
   ]
 }
