@@ -138,7 +138,8 @@ Throughout my career, I have been fortunate enough to work with some of the most
   - Research Area: Artificial Intelligent - Intelligence Tutoring Systems 
   - Master dissertation 
     - iComb – Interactive Combinatorics on Internet (e-learning and intelligent tutoring system) [http://www.teses.usp.br/teses/disponiveis/45/45134/tde-26062009-191043/pt-br.php](http://www.teses.usp.br/teses/disponiveis/45/45134/tde-26062009-191043/pt-br.php)
-    - Major scientific contribution: Conception and development of a mathematical proof (pages 41 to 68) that the software will detect all students' mistakes given a set of weak hypotheses. The mathematical proof originates from the error detection algorithm implemented by myself.- Degree in Mathematics, University of São Paulo - USP (1998 - 2003)
+    - Major scientific contribution: Conception and development of a mathematical proof (pages 41 to 68) that the software will detect all students' mistakes given a set of weak hypotheses. The mathematical proof originates from the error detection algorithm implemented by myself.
+  
 - Degree in Mathematics, University of São Paulo - USP (1998 - 2003)
 - Degree in Business Administration, Universidade Mackenzie (1991 - 1994)
 - Deep Learning Specialization
