@@ -5,9 +5,9 @@ https://www.linkedin.com/in/alex-eisenmann/
 
 ## Presentation
 
-I am an Artificial Intelligence Thought Leader with over 20 years of expertise in software development, computer science, data science, and an abiding passion for mathematics.
+Artificial Intelligence Thought Leader with over 20 years of expertise in software development, computer science, data science and mathematics. 
 
-I adopt a multidisciplinary approach to address the challenges of the ever-changing technological landscape. This approach not only aligns with my strengths but also enables me to guide the company on the "why" and "how" of designing prototypes and proof of concepts in unknown and unproven technologies. This strategy ensures a comprehensive understanding and fosters innovation in a dynamic tech environment. Combining intuition and experience, I strive to achieve the art of the possible by identifying the fundamental concepts my team and I need to learn and understand.
+I belive in a multidisciplinary approach to address the challenges of the ever-changing technological landscape. This approach not only aligns with my strengths but also enables me to guide the company on the "why" and "how" of designing prototypes and proof of concepts in unknown and unproven technologies. This strategy ensures a comprehensive understanding and fosters innovation in a dynamic tech environment. Combining intuition and experience, I strive to achieve the art of the possible by identifying the fundamental concepts my team and I need to learn and understand.
 
 I excel in translating complex technological concepts into clear and accessible language, fostering collaboration between technical teams and business/management. This ensures a seamless and productive partnership that results in innovation with both depth and clarity.
 
