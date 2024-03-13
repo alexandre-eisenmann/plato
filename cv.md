@@ -5,19 +5,19 @@ https://www.linkedin.com/in/alex-eisenmann/
 
 ## Presentation
 
-As an Emerging Technologist and Researcher with over 20 years of experience in software development, computer science, data science, and mathematics, I am passionate about using technology to create positive change in society. Throughout my career, I have worked with a variety of organizations, including banks, financial companies, educational institutions, scientific organizations, startups, and R&D centers.
+I am an Artificial Intelligence Thought Leader with over 20 years of expertise in software development, computer science, data science, and an abiding passion for mathematics.
 
-As a leader in my field, I prioritize creating a positive and collaborative work environment where everyone's ideas are respected and valued. I believe in fostering a culture of learning and growth, and I am committed to helping my team members develop their skills and achieve their full potential. I hold a Master of Science (Research) degree in Computer Science and two bachelor's degrees in Mathematics and Business, and I am always looking for opportunities to learn and grow as a professional.
+I find fulfillment in influencing and designing prototypes and proof of concepts in unknown and unproven technology. In this ever-evolving technological landscape, I bring both intuition and experience to discern the fundamental concepts that my team and I need to learn and understand. This approach enables us to bring ideas to life and explore the art of the possible.
 
-Throughout my career, I have been fortunate enough to work with some of the most cutting-edge technologies. This experience has given me the nuanced and relevant expertise necessary to thrive as an advisor to companies seeking guidance on emerging technologies. I enjoy creating an environment where everyone can grow and thrive, and I am committed to using my knowledge and experience to help organizations achieve their goals.
+I excel in translating complex technological concepts into clear and accessible language, fostering collaboration between technical teams and business/management. This ensures a seamless and productive partnership that results in innovation with both depth and clarity.
 
 ## Highlights
 
-- Artificial Intelligence and Appled Mathematics Advisor
+- Artificial Intelligence and Generative AI though leadership
+- Applied Mathematics Advisory 
 - Listed as an inventor of a computer vision application in a Patent Application 
 - Emergent Technology Evangelist 
-- Leadership in Quantum Computing exploration.
-- Early Transformers and Generative AI exploration. 
+- Leadership in Quantum Computing research.
 - Machine Learning practitioner and mentor.
 - Master's degree (Research) in Computer Science. 
 - Bachelor's in Mathematics.
@@ -27,12 +27,27 @@ Throughout my career, I have been fortunate enough to work with some of the most
 
 ## Professional Experience
 
+### Principal Research Engineer
+######  Jul/2023 - Today
+######  NBNCo - Incubator
+
+
+- AskNbn: Developed and presented a compelling proof of concept featuring the cutting-edge GPT-4 model, laying the foundation for a successful pilot within the company. Spearheaded the implementation of the early version of the PoC, contributing significantly to its evolution into a thriving initiative.
+- Leading Generative AI Research in the company
+- Conception, Design and development of custom chatbot implementation for AskNbn
+- Custom RAG pattern implementation allowing multiple documents sets segregated by user profiles for AskNbn
+- Design of data ingestion architecture and Vector Databases
+- Cognitive Architecture and Prompting patterns research: ReAct, ToT
+- Agentic RAG pattern proof of concept
+- Agent framework research and PoC
+- Communication of Generative AI principle across the company
+- Design of a custom transformer-based anomaly detection based on TranAD to detect anomalies in network data
+
 ### Senior Emergent Technology Specialist
-######  2020 - Today
+######  2020 - 2023
 ######  NBNCo - Incubator
 
 - Conducting research and pilot projects on a Deep Anomaly Detection System using an LSTM and a Transformer Model on streaming technologies
-- Investigating Generative AI
 - Leading exploration of Quantum Computing
 - Communicating complex ideas to a broader audience
 - Conducting research on Artificial Intelligence and Computer Vision
@@ -148,13 +163,13 @@ Throughout my career, I have been fortunate enough to work with some of the most
 
 I have been exposed to several programming paradigms such as imperative, object-oriented, functional programming, logical programming, constraint programming, and more. However, to avoid an extensive list, I would like to mention that I have been using Python for ML frameworks and JavaScript (or TypeScript) for dealing with front-end and visualizations. 
 
-- Python (Qiskit, Tensorflow, Pytorch, FastAI, JAX)
-- Javascript (React js, D3 js, Typescript)
+- Python (Langchain, Tensorflow, Pytorch, FastAI, JAX, Qiskit)
+- Javascript (Node, React js, D3 js, Typescript)
 - Long ago: Java/Ruby/Scala/C/LISP
 
 ## Patents and Inventions
 
-- Listed as an inventor on US Patent Application 20220067454 for "Automatic Work Order Analysis", which was filed on September 2, 2020 by NBN Co Limited and other inventors.
+- Listed as an inventor on US Patent Application 20220067454 for "Automatic Work Order Analysis", which was filed on September 2, 2020 by NBN Co Limited and other inventors. https://patents.justia.com/patent/20220067454
   - Application of Computer Vision to automatic Work Order Analysis
  
   
