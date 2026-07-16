@@ -1,71 +1,80 @@
-# Getting Started with Create React App
+# Plato
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An interactive React and Three.js simulation of the entry angle conjecture.
+The project is structured as a reusable foundation for mathematical experiments,
+visual demonstrations, and game-like variants.
 
-## Available Scripts
+## Requirements
 
-In the project directory, you can run:
+- Node.js 22.13 or newer (`.nvmrc` is included)
+- pnpm 11.13 or newer
 
-### `npm start`
+Enable the pinned pnpm version through Corepack if necessary:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```sh
+corepack enable
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Development
 
-### `npm test`
+```sh
+pnpm install
+pnpm dev
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Vite serves the app at <http://localhost:5173/plato/>.
 
-### `npm run build`
+- <kbd>Space</kbd> launches a beam from a randomized entry position.
+- <kbd>Shift</kbd> + <kbd>Space</kbd> launches the fixed yellow trajectory.
+- Development builds expose controls for launching 10, 50, or 100 beams and
+  display renderer and simulation instrumentation.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Architecture
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The runtime is divided by responsibility:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- `src/App.jsx` owns application state and composes the experience.
+- `src/scene/` defines the Three.js scene and camera.
+- `src/maze/` owns maze generation, rendering, wall transforms, and the spatial
+  collision index.
+- `src/beams/` owns beam creation, lifecycle simulation, bounds, batched
+  rendering, textures, and reflection lighting.
+- `src/dev/` contains development-only stress controls and instrumentation.
+- `src/sceneConfig.js` is the shared configuration boundary for visual and
+  simulation constants.
 
-### `npm run eject`
+Beam physics is intentionally independent from React rendering. Mutable
+simulation records advance inside the frame loop, while instanced GPU batches
+consume their paths. This keeps the simulation suitable for alternate renderers
+or future academic analysis without coupling it to component state.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Extension points
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Add maze algorithms behind the same wall-map representation used by
+  `generateMaze`.
+- Add beam launch strategies through `createBeam` or a new controller.
+- Add experimental physics by extending the pure functions in `beamPath.js`.
+- Build alternate visualizations around the existing collision index and beam
+  registry without changing lifecycle management.
+- Keep optional diagnostics in `src/dev/` so production behavior stays clean.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Quality checks
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```sh
+pnpm test
+pnpm build
+```
 
-## Learn More
+Use `pnpm test:watch` during development and `pnpm preview` to inspect the
+production bundle locally.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Deployment
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The Vite base path is configured for GitHub Pages at
+<https://alexandre-eisenmann.github.io/plato/>.
 
-### Code Splitting
+```sh
+pnpm deploy
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# plato
+This builds the app into `dist/` and publishes it to the `gh-pages` branch.

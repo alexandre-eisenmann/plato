@@ -10,7 +10,10 @@ output
 /coverage
 
 # production
-/build
+/dist
+
+# vite
+.vite
 
 # misc
 .DS_Store
@@ -20,5 +23,6 @@ output
 .env.production.local
 
 npm-debug.log*
+pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
