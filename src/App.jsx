@@ -9,7 +9,6 @@ import {createWallCollisionIndex} from './maze/wallCollision.js'
 import Experience from './scene/Experience.jsx'
 import Dashboard from './ui/Dashboard.jsx'
 import {
-  MAZE_SEED,
   MAZE_WIDTH,
   WALL_THICKNESS,
 } from './sceneConfig.js'
@@ -17,7 +16,7 @@ import {
 export default function App() {
   const [experiment, setExperiment] = useState(() => createMazeExperiment({
     size: MAZE_WIDTH,
-    seed: MAZE_SEED,
+    seed: createRandomMazeSeed(),
     preferredEntryPoint: DEFAULT_BEAM_ENTRY_POINT,
   }))
   const collisionIndex = useMemo(() => (

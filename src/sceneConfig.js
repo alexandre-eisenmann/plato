@@ -1,6 +1,5 @@
 export const MAZE_WIDTH = 20
 export const MAZE_HEIGHT = 20
-export const MAZE_SEED = 'victor mathematician loco9'
 export const WALL_THICKNESS = 0.5
 
 export function createMazeBounds(width, height) {

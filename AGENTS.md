@@ -91,9 +91,9 @@ React Three Fiber lifecycle code in `.jsx` components or hooks.
 
 ### Maze stability
 
-- The default maze is deterministic through `MAZE_SEED`.
+- The default maze is 20x20 and receives a fresh random seed on every page load.
 - Do not casually change the seeded random call order in `generateMaze.js`; doing
-  so changes the maze even when the seed remains identical.
+  so changes a maze even when its seed remains identical.
 - A wall marked as a door is omitted from both rendering and collision data.
 - Rendering transforms and collision boxes must continue to derive from the same
   wall representation.
