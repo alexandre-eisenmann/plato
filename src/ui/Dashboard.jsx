@@ -105,14 +105,16 @@ export default function Dashboard({
                 type="button"
                 onClick={onLaunchChampion}
               >
-                LAUNCH CHAMPION
+                <span aria-hidden="true">◆</span>
+                REPLAY CHAMPION
               </button>
             )}
             {!hasChampion && (
               <span className="experiment-utilities__status">CHAMPION NOT FOUND</span>
             )}
             <button className="clear-active" type="button" onClick={onClear}>
-              CLEAR ACTIVE
+              <span aria-hidden="true">×</span>
+              CLEAR BEAMS
             </button>
           </div>
         </div>
