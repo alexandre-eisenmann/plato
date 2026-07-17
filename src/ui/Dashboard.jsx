@@ -4,6 +4,12 @@ import {createExitHistogram} from '../beams/exitHistogram.js'
 const LAUNCH_COUNTS = [1, 10, 50, 100]
 const MAZE_SIZES = [10, 20, 30, 40]
 
+export function calculateExitBPercentage(exitEvents) {
+  if (exitEvents.length === 0) return 0
+  const exitBCount = exitEvents.filter(event => event.exit === 'B').length
+  return Math.round(exitBCount / exitEvents.length * 100)
+}
+
 export default function Dashboard({
   activeDurations,
   exitEvents,
@@ -27,6 +33,7 @@ export default function Dashboard({
     ...histogram.map(bucket => bucket.A + bucket.B + bucket.active),
   )
   const exitBCount = exitEvents.filter(event => event.exit === 'B').length
+  const exitBPercentage = calculateExitBPercentage(exitEvents)
 
   return (
     <aside
@@ -160,7 +167,7 @@ export default function Dashboard({
           <span><i className="legend-a" />EXIT A</span>
           <span><i className="legend-b" />EXIT B</span>
           <span><i className="legend-active" />ACTIVE</span>
-          <strong>{exitBCount} B DETECTED</strong>
+          <strong>{exitBCount} B // {exitBPercentage}% SUCCESS</strong>
         </div>
         <div className="exit-histogram" aria-label="Beam exit time histogram">
           {histogram.map(bucket => {

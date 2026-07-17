@@ -2,7 +2,8 @@ import {useThree} from '@react-three/fiber'
 import {PerspectiveCamera} from '@react-three/drei'
 
 const CAMERA_FOV_DEGREES = 50
-const CAMERA_FRAME_PADDING = 1.15
+// Leave enough screen-space around the maze for the adaptive exit badges.
+const CAMERA_FRAME_PADDING = 1.28
 
 export function cameraDistanceForMaze(aspect, width, height) {
   const halfFovRadians = CAMERA_FOV_DEGREES * Math.PI / 360
