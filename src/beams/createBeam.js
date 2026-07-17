@@ -38,3 +38,12 @@ export function createBeam({
     target: target.add(approach),
   }
 }
+
+export function replayBeam(beam, createId = () => crypto.randomUUID()) {
+  return {
+    id: createId(),
+    color: beam.color,
+    source: beam.source.clone(),
+    target: beam.target.clone(),
+  }
+}

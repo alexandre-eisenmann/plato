@@ -33,9 +33,11 @@ export default function App() {
   const {
     activeDurations,
     beams,
+    championBeam,
     clearBeams,
     clearExitEvents,
     exitEvents,
+    launchChampion,
     removeBeam,
     reportActiveDurations,
     spawnBeams,
@@ -69,12 +71,14 @@ export default function App() {
         activeDurations={activeDurations}
         onClear={clearBeams}
         onLaunch={spawnBeams}
+        onLaunchChampion={launchChampion}
         onGenerateMaze={generateNewMaze}
         onResetResults={clearExitEvents}
         outputRef={statsRef}
         exitEvents={exitEvents}
         mazeSeed={experiment.seed}
         mazeSize={experiment.width}
+        hasChampion={Boolean(championBeam)}
       />
     </main>
   )

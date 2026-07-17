@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest'
 import {BeamColor} from '../sceneConfig.js'
-import {createBeam} from './createBeam.js'
+import {createBeam, replayBeam} from './createBeam.js'
 
 describe('createBeam', () => {
   const entry = {
@@ -42,5 +42,21 @@ describe('createBeam', () => {
     expect(beam.source.x).toBeCloseTo(2.5)
     expect(beam.target.x).toBeCloseTo(2.5)
     expect(beam.source.y).toBeLessThan(beam.target.y)
+  })
+
+  it('replays a launch with cloned geometry and a fresh id', () => {
+    const original = createBeam({
+      entry,
+      random: () => 0.25,
+      createId: () => 'champion',
+    })
+    const replay = replayBeam(original, () => 'replay')
+
+    expect(replay.id).toBe('replay')
+    expect(replay.color).toBe(original.color)
+    expect(replay.source).toEqual(original.source)
+    expect(replay.target).toEqual(original.target)
+    expect(replay.source).not.toBe(original.source)
+    expect(replay.target).not.toBe(original.target)
   })
 })

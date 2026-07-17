@@ -13,9 +13,11 @@ export function calculateExitBPercentage(exitEvents) {
 export default function Dashboard({
   activeDurations,
   exitEvents,
+  hasChampion,
   onClear,
   onGenerateMaze,
   onLaunch,
+  onLaunchChampion,
   onResetResults,
   outputRef,
   mazeSeed,
@@ -95,8 +97,22 @@ export default function Dashboard({
                 {count === 1 ? 'START +1' : `+${count}`}
               </button>
             ))}
-            <button className="danger" type="button" onClick={onClear}>
-              PURGE ACTIVE BEAMS
+          </div>
+          <div className="experiment-utilities">
+            {hasChampion && (
+              <button
+                className="champion"
+                type="button"
+                onClick={onLaunchChampion}
+              >
+                LAUNCH CHAMPION
+              </button>
+            )}
+            {!hasChampion && (
+              <span className="experiment-utilities__status">CHAMPION NOT FOUND</span>
+            )}
+            <button className="clear-active" type="button" onClick={onClear}>
+              CLEAR ACTIVE
             </button>
           </div>
         </div>

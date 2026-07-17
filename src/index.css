@@ -363,18 +363,57 @@ body {
   box-shadow: 0 0 14px rgb(74 255 138 / 15%), inset 0 0 10px rgb(137 255 178 / 8%);
 }
 
-.stress-controls button.danger {
-  grid-column: 1 / -1;
-  border-color: rgb(255 123 103 / 32%);
-  background: rgb(77 22 17 / 42%);
+.experiment-utilities {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 30px;
+  gap: 10px;
+}
+
+.experiment-utilities__status {
+  color: var(--hud-dim);
+  font-size: 7px;
+  letter-spacing: .08em;
+}
+
+.experiment-utilities button {
+  min-height: 30px;
+  padding: 6px 10px;
+  border-radius: 2px;
+  font: 700 8px/1 inherit;
+  letter-spacing: .08em;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.experiment-utilities button.champion {
+  border: 1px solid rgb(255 191 76 / 58%);
+  border-color: rgb(255 191 76 / 72%);
+  background: linear-gradient(180deg, rgb(151 98 19 / 65%), rgb(77 45 5 / 72%));
+  color: #ffe3a1;
+  box-shadow: 0 0 14px rgb(255 174 41 / 14%);
+}
+
+.experiment-utilities button.champion:hover,
+.experiment-utilities button.champion:focus-visible {
+  border-color: rgb(255 207 119 / 92%);
+  background: rgb(135 81 14 / 78%);
+  box-shadow: 0 0 16px rgb(255 174 41 / 20%);
+}
+
+.experiment-utilities button.clear-active {
+  border: 1px solid rgb(255 123 103 / 32%);
+  background: transparent;
   color: #ffab9c;
 }
 
-.stress-controls button.danger:hover,
-.stress-controls button.danger:focus-visible {
+.experiment-utilities button.clear-active:hover,
+.experiment-utilities button.clear-active:focus-visible {
   border-color: rgb(255 137 118 / 75%);
   background: rgb(115 33 26 / 60%);
   box-shadow: 0 0 14px rgb(255 76 54 / 12%);
+  outline: none;
 }
 
 .maze-config {
