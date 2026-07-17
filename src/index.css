@@ -32,6 +32,11 @@ body {
   height: 100%;
 }
 
+.scene-canvas {
+  min-width: 0;
+  min-height: 0;
+}
+
 .terminal-hud {
   position: absolute;
   top: clamp(12px, 2vw, 28px);
@@ -85,6 +90,44 @@ body {
   justify-content: space-between;
   padding: 18px 18px 15px;
   border-bottom: 1px solid var(--hud-line);
+}
+
+.terminal-hud__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.terminal-hud__toggle {
+  min-width: 35px;
+  padding: 4px 5px;
+  border: 1px solid rgb(105 255 159 / 30%);
+  border-radius: 2px;
+  background: rgb(24 72 40 / 28%);
+  color: var(--hud-dim);
+  font: 700 8px/1 inherit;
+  letter-spacing: .08em;
+  cursor: pointer;
+}
+
+.terminal-hud__toggle:hover,
+.terminal-hud__toggle:focus-visible {
+  border-color: rgb(134 255 176 / 70%);
+  color: var(--hud-bright);
+  outline: none;
+}
+
+.terminal-hud[data-collapsed='true'] {
+  width: min(330px, calc(100vw - 24px));
+}
+
+.terminal-hud[data-collapsed='true'] .terminal-hud__header {
+  border-bottom: 0;
+}
+
+.terminal-hud[data-collapsed='true'] .terminal-hud__section,
+.terminal-hud[data-collapsed='true'] .terminal-hud__footer {
+  display: none;
 }
 
 .terminal-hud__eyebrow {
@@ -165,9 +208,22 @@ body {
   letter-spacing: .12em;
 }
 
+.stress-controls__intro {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.stress-controls__intro small {
+  color: var(--hud-dim);
+  font-size: 7px;
+  letter-spacing: .04em;
+}
+
 .stress-controls__actions {
   display: grid;
-  grid-template-columns: repeat(3, 1fr) 1.35fr;
+  grid-template-columns: repeat(4, 1fr);
   gap: 6px;
 }
 
@@ -198,6 +254,7 @@ body {
 }
 
 .stress-controls button.danger {
+  grid-column: 1 / -1;
   border-color: rgb(255 123 103 / 32%);
   background: rgb(77 22 17 / 42%);
   color: #ffab9c;
@@ -384,16 +441,89 @@ body {
   50% { opacity: .45; }
 }
 
-@media (max-width: 680px), (max-height: 620px) {
+@media (max-width: 720px) {
+  .app-shell {
+    display: grid;
+    grid-template-rows: minmax(280px, 52dvh) minmax(0, 48dvh);
+  }
+
+  .app-shell:has(.terminal-hud[data-collapsed='true']) {
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .scene-canvas {
+    grid-row: 1;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
   .terminal-hud {
-    top: 8px;
-    left: 8px;
-    width: min(286px, calc(100vw - 16px));
+    position: relative;
+    top: auto;
+    left: auto;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: 48dvh;
+    overflow: auto;
+    border-width: 1px 0 0;
+    border-radius: 0;
+    box-shadow: 0 -18px 48px rgb(0 0 0 / 55%), inset 0 0 30px rgb(0 255 107 / 3%);
+    backdrop-filter: blur(16px) saturate(130%);
+    overscroll-behavior: contain;
+  }
+
+  .terminal-hud[data-collapsed='true'] {
+    width: 100%;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .terminal-hud[data-collapsed='true'] .terminal-hud__header {
+    position: relative;
+  }
+
+  .terminal-hud__header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    order: 0;
+    background: rgb(1 13 8 / 96%);
+  }
+
+  .terminal-hud__section--controls {
+    order: 1;
+  }
+
+  .terminal-hud__section:not(.terminal-hud__section--controls) {
+    order: 2;
+  }
+
+  .terminal-hud__footer {
+    order: 3;
   }
 
   .terminal-hud__header,
   .terminal-hud__section {
-    padding: 10px 12px;
+    padding: 12px 16px;
+  }
+
+  .terminal-hud h1 {
+    font-size: 12px;
+  }
+
+  .stress-controls__actions {
+    gap: 8px;
+  }
+
+  .stress-controls button {
+    min-height: 42px;
+    font-size: 11px;
+  }
+
+  .stress-controls button.danger {
+    min-height: 34px;
   }
 
   .renderer-stats {
@@ -407,7 +537,27 @@ body {
   }
 
   .terminal-hud__footer {
-    display: none;
+    padding: 12px 16px max(14px, env(safe-area-inset-bottom));
+  }
+}
+
+@media (min-width: 721px) and (max-height: 680px) {
+  .terminal-hud {
+    top: 8px;
+    left: 8px;
+    max-height: calc(100vh - 16px);
+    overflow: auto;
+  }
+
+  .terminal-hud__header,
+  .terminal-hud__section {
+    padding-block: 10px;
+  }
+
+  .renderer-stats {
+    min-height: 0;
+    font-size: 8px;
+    line-height: 1.35;
   }
 }
 

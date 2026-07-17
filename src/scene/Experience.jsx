@@ -25,7 +25,7 @@ export default function Experience({
   walls,
 }) {
   return (
-    <Canvas>
+    <Canvas className="scene-canvas">
       <color attach="background" args={['black']} />
       <SceneCamera />
       <SceneMetrics

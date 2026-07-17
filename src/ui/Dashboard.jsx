@@ -1,7 +1,7 @@
-import {useMemo} from 'react'
+import {useMemo, useState} from 'react'
 import {createExitHistogram} from '../beams/exitHistogram.js'
 
-const STRESS_COUNTS = [10, 50, 100]
+const LAUNCH_COUNTS = [1, 10, 50, 100]
 
 export default function Dashboard({
   activeDurations,
@@ -11,6 +11,7 @@ export default function Dashboard({
   onResetResults,
   outputRef,
 }) {
+  const [collapsed, setCollapsed] = useState(false)
   const histogram = useMemo(
     () => createExitHistogram(exitEvents, activeDurations),
     [activeDurations, exitEvents],
@@ -22,13 +23,28 @@ export default function Dashboard({
   const exitBCount = exitEvents.filter(event => event.exit === 'B').length
 
   return (
-    <aside className="terminal-hud" aria-label="Plato simulation console">
+    <aside
+      className="terminal-hud"
+      aria-label="Plato simulation console"
+      data-collapsed={collapsed}
+    >
       <div className="terminal-hud__header">
         <div>
           <span className="terminal-hud__eyebrow">PLATO // OPTICAL LAB</span>
           <h1>ENTRY ANGLE MONITOR</h1>
         </div>
-        <span className="terminal-hud__status">LIVE</span>
+        <div className="terminal-hud__header-actions">
+          <span className="terminal-hud__status">LIVE</span>
+          <button
+            className="terminal-hud__toggle"
+            type="button"
+            aria-expanded={!collapsed}
+            aria-label={collapsed ? 'Expand simulation console' : 'Minimize simulation console'}
+            onClick={() => setCollapsed(current => !current)}
+          >
+            {collapsed ? 'OPEN' : 'MIN'}
+          </button>
+        </div>
       </div>
 
       <section className="terminal-hud__section" aria-labelledby="telemetry-title">
@@ -87,20 +103,28 @@ export default function Dashboard({
         </div>
       </section>
 
-      <section className="terminal-hud__section" aria-labelledby="launch-title">
+      <section
+        className="terminal-hud__section terminal-hud__section--controls"
+        aria-labelledby="launch-title"
+      >
         <div className="terminal-hud__section-title">
           <span id="launch-title">BEAM CONTROL</span>
           <span>CTL.02</span>
         </div>
         <div className="stress-controls" aria-label="Beam launch controls">
-          <span className="stress-controls__label">MULTI-LAUNCH</span>
+          <div className="stress-controls__intro">
+            <span className="stress-controls__label">LAUNCH FROM ENTRY A</span>
+            <small>Select a beam count to begin</small>
+          </div>
           <div className="stress-controls__actions">
-            {STRESS_COUNTS.map(count => (
+            {LAUNCH_COUNTS.map(count => (
               <button key={count} type="button" onClick={() => onLaunch(count)}>
                 +{count}
               </button>
             ))}
-            <button className="danger" type="button" onClick={onClear}>PURGE</button>
+            <button className="danger" type="button" onClick={onClear}>
+              PURGE ACTIVE BEAMS
+            </button>
           </div>
         </div>
       </section>
