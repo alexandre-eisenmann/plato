@@ -4,7 +4,6 @@ import {
   BEAM_CULL_MARGIN,
   BEAM_MAX_SIMULATION_STEP_SECONDS,
   BEAM_SPEED,
-  MAZE_BOUNDS,
 } from '../sceneConfig.js'
 import {hasClearedBounds, isPointInsideBounds} from './beamBounds.js'
 import {advanceBeamPath, beamPathLength, hasStableBeamLength} from './beamPath.js'
@@ -12,6 +11,7 @@ import {classifyMazeExit} from '../maze/mazeExits.js'
 
 export default function BeamSimulation({
   beam,
+  bounds,
   collisionIndex,
   exits,
   metricsRef,
@@ -46,14 +46,14 @@ export default function BeamSimulation({
 
     if (!simulation.hasReachedMaze) {
       simulation.hasReachedMaze = points.some(point => (
-        isPointInsideBounds(point, MAZE_BOUNDS, BEAM_CULL_MARGIN)
+        isPointInsideBounds(point, bounds, BEAM_CULL_MARGIN)
       ))
     }
     if (simulation.hasReachedMaze) simulation.duration += step
 
     const leftMaze = simulation.hasReachedMaze && hasClearedBounds(
       points,
-      MAZE_BOUNDS,
+      bounds,
       BEAM_CULL_MARGIN,
     )
 

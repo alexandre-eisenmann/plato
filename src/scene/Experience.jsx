@@ -16,18 +16,21 @@ import SceneMetrics from '../ui/SceneMetrics.jsx'
 
 export default function Experience({
   beams,
+  bounds,
   collisionIndex,
   exits,
+  height,
   metricsRef,
   onBeamProgress,
   onRemove,
   statsRef,
   walls,
+  width,
 }) {
   return (
     <Canvas className="scene-canvas">
       <color attach="background" args={['black']} />
-      <SceneCamera />
+      <SceneCamera height={height} width={width} />
       <SceneMetrics
         activeBeams={Object.keys(beams).length}
         outputRef={statsRef}
@@ -40,11 +43,12 @@ export default function Experience({
         args={[0xffffff, DIRECTIONAL_LIGHT_INTENSITY]}
       />
 
-      <MazeFloor />
-      <MazeMesh walls={walls} />
+      <MazeFloor height={height} width={width} />
+      <MazeMesh height={height} walls={walls} width={width} />
       <MazeExitLabels exits={exits} />
       <BeamSystem
         beams={beams}
+        bounds={bounds}
         collisionIndex={collisionIndex}
         exits={exits}
         metricsRef={metricsRef}
@@ -52,7 +56,7 @@ export default function Experience({
         onRemove={onRemove}
       />
       <OrbitControls
-        maxDistance={CAMERA_MAX_DISTANCE}
+        maxDistance={Math.max(CAMERA_MAX_DISTANCE, Math.max(width, height) * 5)}
         maxPolarAngle={CAMERA_MAX_POLAR_ANGLE}
         minDistance={CAMERA_MIN_DISTANCE}
       />

@@ -1,35 +1,33 @@
-import {useMemo, useRef, useState} from 'react'
-import seedrandom from 'seedrandom'
+import {useCallback, useMemo, useRef, useState} from 'react'
 import useBeamController from './beams/useBeamController.js'
-import {BEAM_ENTRY_POINT} from './beams/createBeam.js'
-import {generateMaze} from './maze/generateMaze.js'
+import {DEFAULT_BEAM_ENTRY_POINT} from './beams/createBeam.js'
+import {
+  createMazeExperiment,
+  createRandomMazeSeed,
+} from './maze/createMazeExperiment.js'
 import {createWallCollisionIndex} from './maze/wallCollision.js'
-import {createMazeExits} from './maze/mazeExits.js'
 import Experience from './scene/Experience.jsx'
 import Dashboard from './ui/Dashboard.jsx'
 import {
-  MAZE_HEIGHT,
   MAZE_SEED,
   MAZE_WIDTH,
   WALL_THICKNESS,
 } from './sceneConfig.js'
 
 export default function App() {
-  const [walls] = useState(() => (
-    generateMaze(MAZE_WIDTH, MAZE_HEIGHT, seedrandom(MAZE_SEED))
-  ))
+  const [experiment, setExperiment] = useState(() => createMazeExperiment({
+    size: MAZE_WIDTH,
+    seed: MAZE_SEED,
+    preferredEntryPoint: DEFAULT_BEAM_ENTRY_POINT,
+  }))
   const collisionIndex = useMemo(() => (
     createWallCollisionIndex(
-      walls,
-      MAZE_WIDTH,
-      MAZE_HEIGHT,
+      experiment.walls,
+      experiment.width,
+      experiment.height,
       WALL_THICKNESS,
     )
-  ), [walls])
-  const exits = useMemo(
-    () => createMazeExits(walls, MAZE_WIDTH, MAZE_HEIGHT, BEAM_ENTRY_POINT),
-    [walls],
-  )
+  ), [experiment])
   const metricsRef = useRef({raycasts: 0, segments: 0, wallTests: 0})
   const statsRef = useRef()
   const {
@@ -41,27 +39,42 @@ export default function App() {
     removeBeam,
     reportActiveDurations,
     spawnBeams,
-  } = useBeamController()
+  } = useBeamController(experiment.exits[0])
+  const generateNewMaze = useCallback(size => {
+    clearBeams()
+    clearExitEvents()
+    metricsRef.current = {raycasts: 0, segments: 0, wallTests: 0}
+    setExperiment(createMazeExperiment({
+      size,
+      seed: createRandomMazeSeed(),
+    }))
+  }, [clearBeams, clearExitEvents])
 
   return (
     <main className="app-shell">
       <Experience
         beams={beams}
+        bounds={experiment.bounds}
         collisionIndex={collisionIndex}
-        exits={exits}
+        exits={experiment.exits}
+        height={experiment.height}
         metricsRef={metricsRef}
         onBeamProgress={reportActiveDurations}
         onRemove={removeBeam}
         statsRef={statsRef}
-        walls={walls}
+        walls={experiment.walls}
+        width={experiment.width}
       />
       <Dashboard
         activeDurations={activeDurations}
         onClear={clearBeams}
         onLaunch={spawnBeams}
+        onGenerateMaze={generateNewMaze}
         onResetResults={clearExitEvents}
         outputRef={statsRef}
         exitEvents={exitEvents}
+        mazeSeed={experiment.seed}
+        mazeSize={experiment.width}
       />
     </main>
   )

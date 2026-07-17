@@ -2,7 +2,7 @@ import {useCallback, useState} from 'react'
 import useKeyPress from '../hooks/useKeyPress.js'
 import {createBeam} from './createBeam.js'
 
-export default function useBeamController() {
+export default function useBeamController(entry) {
   const [beams, setBeams] = useState({})
   const [activeDurations, setActiveDurations] = useState([])
   const [exitEvents, setExitEvents] = useState([])
@@ -10,11 +10,11 @@ export default function useBeamController() {
   const spawnBeams = useCallback((count, shiftKey = false) => {
     const additions = {}
     for (let index = 0; index < count; index += 1) {
-      const beam = createBeam({shiftKey})
+      const beam = createBeam({entry, shiftKey})
       additions[beam.id] = beam
     }
     setBeams(current => ({...current, ...additions}))
-  }, [])
+  }, [entry])
 
   const removeBeam = useCallback((id, exitEvent) => {
     setBeams(current => {

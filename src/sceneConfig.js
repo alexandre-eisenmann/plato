@@ -3,12 +3,14 @@ export const MAZE_HEIGHT = 20
 export const MAZE_SEED = 'victor mathematician loco9'
 export const WALL_THICKNESS = 0.5
 
-export const MAZE_BOUNDS = Object.freeze({
-  minX: -MAZE_WIDTH / 2,
-  maxX: MAZE_WIDTH / 2,
-  minY: -MAZE_HEIGHT / 2,
-  maxY: MAZE_HEIGHT / 2,
-})
+export function createMazeBounds(width, height) {
+  return Object.freeze({
+    minX: -width / 2,
+    maxX: width / 2,
+    minY: -height / 2,
+    maxY: height / 2,
+  })
+}
 
 export const BEAM_SPEED = 20
 export const BEAM_CULL_MARGIN = 1.5

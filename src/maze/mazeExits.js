@@ -27,9 +27,11 @@ export function createMazeExits(walls, width, height, entryPoint) {
     .filter(([, wall]) => wall.door)
     .map(([key]) => ({key, ...doorGeometry(key, width, height)}))
 
-  doors.sort((a, b) => (
-    distanceSquared(a.center, entryPoint) - distanceSquared(b.center, entryPoint)
-  ))
+  if (entryPoint) {
+    doors.sort((a, b) => (
+      distanceSquared(a.center, entryPoint) - distanceSquared(b.center, entryPoint)
+    ))
+  }
 
   return doors.map((door, index) => ({
     ...door,

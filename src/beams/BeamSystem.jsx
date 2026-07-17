@@ -8,6 +8,7 @@ import useBeamTextures from './useBeamTextures.js'
 
 export default function BeamSystem({
   beams,
+  bounds,
   collisionIndex,
   exits,
   metricsRef,
@@ -36,6 +37,7 @@ export default function BeamSystem({
         <BeamSimulation
           key={beam.id}
           beam={beam}
+          bounds={bounds}
           collisionIndex={collisionIndex}
           exits={exits}
           metricsRef={metricsRef}

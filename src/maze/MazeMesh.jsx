@@ -1,14 +1,14 @@
 import {useLayoutEffect, useMemo, useRef} from 'react'
 import {DoubleSide, Object3D, StaticDrawUsage} from 'three'
-import {MAZE_HEIGHT, MAZE_WIDTH, WALL_THICKNESS} from '../sceneConfig.js'
+import {WALL_THICKNESS} from '../sceneConfig.js'
 import {createWallTransforms} from './wallTransforms.js'
 
-export default function MazeMesh({walls}) {
+export default function MazeMesh({height, walls, width}) {
   const mesh = useRef()
   const instance = useMemo(() => new Object3D(), [])
   const transforms = useMemo(
-    () => createWallTransforms(walls, MAZE_WIDTH, MAZE_HEIGHT),
-    [walls],
+    () => createWallTransforms(walls, width, height),
+    [height, walls, width],
   )
 
   useLayoutEffect(() => {
