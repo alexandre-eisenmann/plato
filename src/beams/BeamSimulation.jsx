@@ -2,23 +2,24 @@ import {useEffect, useMemo} from 'react'
 import {useFrame} from '@react-three/fiber'
 import {
   BEAM_CULL_MARGIN,
-  BEAM_MAX_LIFETIME_SECONDS,
   BEAM_MAX_SIMULATION_STEP_SECONDS,
   BEAM_SPEED,
   MAZE_BOUNDS,
 } from '../sceneConfig.js'
 import {hasClearedBounds, isPointInsideBounds} from './beamBounds.js'
 import {advanceBeamPath, beamPathLength, hasStableBeamLength} from './beamPath.js'
+import {classifyMazeExit} from '../maze/mazeExits.js'
 
 export default function BeamSimulation({
   beam,
   collisionIndex,
+  exits,
   metricsRef,
   onRemove,
   registry,
 }) {
   const simulation = useMemo(() => ({
-    age: 0,
+    duration: 0,
     color: beam.color,
     hasReachedMaze: false,
     length: beamPathLength([beam.source, beam.target]),
@@ -32,7 +33,6 @@ export default function BeamSimulation({
   }, [beam.id, registry, simulation])
 
   useFrame((_, delta) => {
-    simulation.age += delta
     const step = Math.min(delta, BEAM_MAX_SIMULATION_STEP_SECONDS)
     const points = advanceBeamPath(
       simulation.points,
@@ -49,17 +49,20 @@ export default function BeamSimulation({
         isPointInsideBounds(point, MAZE_BOUNDS, BEAM_CULL_MARGIN)
       ))
     }
+    if (simulation.hasReachedMaze) simulation.duration += step
 
-    const expired = simulation.age >= BEAM_MAX_LIFETIME_SECONDS
     const leftMaze = simulation.hasReachedMaze && hasClearedBounds(
       points,
       MAZE_BOUNDS,
       BEAM_CULL_MARGIN,
     )
 
-    if (!simulation.removalRequested && (expired || leftMaze)) {
+    if (!simulation.removalRequested && leftMaze) {
       simulation.removalRequested = true
-      onRemove(beam.id)
+      onRemove(beam.id, {
+        duration: simulation.duration,
+        exit: classifyMazeExit(points.at(-1), exits),
+      })
     }
   }, -2)
 

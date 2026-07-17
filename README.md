@@ -26,8 +26,8 @@ Vite serves the app at <http://localhost:5173/plato/>.
 
 - <kbd>Space</kbd> launches a beam from a randomized entry position.
 - <kbd>Shift</kbd> + <kbd>Space</kbd> launches the fixed yellow trajectory.
-- Development builds expose controls for launching 10, 50, or 100 beams and
-  display renderer and simulation instrumentation.
+- The terminal dashboard exposes controls for launching 10, 50, or 100 beams
+  and displays live renderer and simulation telemetry.
 
 ## Architecture
 
@@ -39,7 +39,7 @@ The runtime is divided by responsibility:
   collision index.
 - `src/beams/` owns beam creation, lifecycle simulation, bounds, batched
   rendering, textures, and reflection lighting.
-- `src/dev/` contains development-only stress controls and instrumentation.
+- `src/ui/` contains the terminal dashboard and live scene telemetry bridge.
 - `src/sceneConfig.js` is the shared configuration boundary for visual and
   simulation constants.
 
@@ -56,7 +56,8 @@ or future academic analysis without coupling it to component state.
 - Add experimental physics by extending the pure functions in `beamPath.js`.
 - Build alternate visualizations around the existing collision index and beam
   registry without changing lifecycle management.
-- Keep optional diagnostics in `src/dev/` so production behavior stays clean.
+- Extend product controls and telemetry in `src/ui/` without coupling them to
+  the beam simulation or Three.js render batches.
 
 ## Quality checks
 

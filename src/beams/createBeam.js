@@ -1,7 +1,11 @@
 import {Vector3} from 'three'
 import {BeamColor} from '../sceneConfig.js'
 
-const ENTRY_TARGET = new Vector3(10.237424798389586, 7.5, 0.5)
+export const BEAM_ENTRY_POINT = Object.freeze({
+  x: 10.237424798389586,
+  y: 7.5,
+})
+const ENTRY_TARGET = new Vector3(BEAM_ENTRY_POINT.x, BEAM_ENTRY_POINT.y, 0.5)
 const RANDOM_ENTRY_SOURCE = new Vector3(12.237424798389586, 7.5, 0.5)
 const FIXED_ENTRY_SOURCE = new Vector3(11.044027937746373, 9.113598317260891, 0.5)
 const APPROACH_DISTANCE = 20
