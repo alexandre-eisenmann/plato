@@ -32,6 +32,19 @@ describe('createBeam', () => {
     expect(beam.id).toBe('beam-2')
   })
 
+  it('keeps randomized entry angles at one consistent beam length', () => {
+    const lengths = [0, 0.25, 0.5, 0.75, 1].map(randomValue => {
+      const beam = createBeam({
+        entry,
+        random: () => randomValue,
+        createId: () => `beam-${randomValue}`,
+      })
+      return beam.source.distanceTo(beam.target)
+    })
+
+    lengths.forEach(length => expect(length).toBeCloseTo(2))
+  })
+
   it('rotates its launch geometry with the entry wall', () => {
     const beam = createBeam({
       entry: {center: {x: 2.5, y: -5}, normal: {x: 0, y: -1}},

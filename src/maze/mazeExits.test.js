@@ -15,10 +15,17 @@ describe('maze exits', () => {
     expect(exits[1].center).toEqual({x: -1.5, y: -1.5})
   })
 
-  it('classifies a cleared beam by its nearest door', () => {
+  it('classifies a beam only when its path crosses outward through a door', () => {
     const exits = createMazeExits(walls, 4, 3, {x: 2.2, y: 1})
 
-    expect(classifyMazeExit({x: 4, y: 1}, exits)).toBe('A')
-    expect(classifyMazeExit({x: -1.5, y: -4}, exits)).toBe('B')
+    expect(classifyMazeExit([{x: 1, y: 1}, {x: 4, y: 1}], exits)).toBe('A')
+    expect(classifyMazeExit([{x: -1.5, y: -1}, {x: -1.5, y: -4}], exits)).toBe('B')
+  })
+
+  it('does not classify a beam from proximity to a door label', () => {
+    const exits = createMazeExits(walls, 4, 3, {x: 2.2, y: 1})
+
+    expect(classifyMazeExit([{x: 1, y: 0}, {x: 4, y: 0}], exits)).toBeUndefined()
+    expect(classifyMazeExit([{x: -1.5, y: -4}, {x: -1.5, y: -2}], exits)).toBeUndefined()
   })
 })

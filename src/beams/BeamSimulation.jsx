@@ -22,6 +22,7 @@ export default function BeamSimulation({
     duration: 0,
     color: beam.color,
     hasReachedMaze: false,
+    exit: undefined,
     length: beamPathLength([beam.source, beam.target]),
     points: [beam.source, beam.target],
     removalRequested: false,
@@ -46,10 +47,16 @@ export default function BeamSimulation({
 
     if (!simulation.hasReachedMaze) {
       simulation.hasReachedMaze = points.some(point => (
-        isPointInsideBounds(point, bounds, BEAM_CULL_MARGIN)
+        // Entering the culling safety margin is not the same as entering the
+        // maze. Keeping these boundaries separate preserves the visible
+        // approach fan and starts transit timing at the actual outer wall.
+        isPointInsideBounds(point, bounds)
       ))
     }
     if (simulation.hasReachedMaze) simulation.duration += step
+    if (simulation.hasReachedMaze && !simulation.exit) {
+      simulation.exit = classifyMazeExit(points, exits)
+    }
 
     const leftMaze = simulation.hasReachedMaze && hasClearedBounds(
       points,
@@ -61,7 +68,7 @@ export default function BeamSimulation({
       simulation.removalRequested = true
       onRemove(beam.id, {
         duration: simulation.duration,
-        exit: classifyMazeExit(points.at(-1), exits),
+        exit: simulation.exit,
       })
     }
   }, -2)
